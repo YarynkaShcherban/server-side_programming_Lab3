@@ -30,6 +30,17 @@ class BookRepo(BaseRepo):
         return self.model.objects.filter(price__lt=price)
 
 
+# class AuthorBookRepo(BaseRepo):
+#     def __init__(self):
+#         super().__init__(AuthorBook)
+
+#     def get_books_by_author(self, author_id):
+#         return self.model.objects.filter(author_id=author_id)
+
+#     def get_authors_by_book(self, book_id):
+#         return self.model.objects.filter(book_id=book_id)
+
+
 class ClientRepo(BaseRepo):
     def __init__(self):
         super().__init__(Client)
@@ -44,7 +55,7 @@ class ClientRepo(BaseRepo):
 class PublisherRepo(BaseRepo):
     def __init__(self):
         super().__init__(Publisher)
-    
+
     def find_by_email(self, email):
         return self.model.objects.filter(email__iexact=email)
 
@@ -61,7 +72,7 @@ class EmployeeRepo(BaseRepo):
 
     def get_by_store(self, store_id):
         return self.model.objects.filter(store_id=store_id)
-    
+
 
 class PositionRepo(BaseRepo):
     def __init__(self):
@@ -112,6 +123,9 @@ class GenreRepo(BaseRepo):
 
     def find_by_name(self, name):
         return self.model.objects.filter(name__icontains=name)
+
+    def get_genres_for_book(self, book):
+        return self.model.objects.filter(book=book)
 
 
 class StoreRepo(BaseRepo):
