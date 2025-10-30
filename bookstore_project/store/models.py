@@ -161,8 +161,10 @@ class Purchase(models.Model):
 
 
 class PurchaseDetail(models.Model):
+    # purchase = models.ForeignKey(
+    #     Purchase, on_delete=models.CASCADE, db_column='purchase_id')
     purchase = models.ForeignKey(
-        Purchase, on_delete=models.CASCADE, db_column='purchase_id')
+        Purchase, on_delete=models.CASCADE, db_column='purchase_id', primary_key=True)
     book = models.ForeignKey(
         Book, on_delete=models.CASCADE, db_column='book_id')
     quantity = models.IntegerField()
