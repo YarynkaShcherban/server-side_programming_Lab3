@@ -145,6 +145,7 @@ class Author(models.Model):
 
 
 class Purchase(models.Model):
+    purchase_id = models.AutoField(primary_key=True, db_column='purchase_id')
     client = models.ForeignKey(
         Client, on_delete=models.SET_NULL, null=True, db_column='client_id')
     employee = models.ForeignKey(
@@ -161,7 +162,7 @@ class Purchase(models.Model):
 
 class PurchaseDetail(models.Model):
     purchase = models.ForeignKey(
-        Purchase, on_delete=models.CASCADE, db_column='purchase_id')
+        Purchase, on_delete=models.CASCADE, db_column='purchase_id', primary_key=True)
     book = models.ForeignKey(
         Book, on_delete=models.CASCADE, db_column='book_id')
     quantity = models.IntegerField()
