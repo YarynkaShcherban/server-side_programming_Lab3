@@ -1,13 +1,4 @@
-from store.repositories.author_repo import AuthorRepo
-from store.repositories.book_repo import BookRepo
-from store.repositories.client_repo import ClientRepo
-from store.repositories.publisher_repo import PublisherRepo
-from store.repositories.employee_repo import EmployeeRepo
-from store.repositories.position_repo import PositionRepo
-from store.repositories.purchase_repo import PurchaseRepo
-from store.repositories.purchase_detail_repo import PurchaseDetailRepo
-from store.repositories.genre_repo import GenreRepo
-from store.repositories.store_repo import StoreRepo
+from store.repositories import *
 
 
 class UnitOfWork:
