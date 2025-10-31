@@ -84,21 +84,11 @@ class Book(models.Model):
         max_digits=10, decimal_places=2, null=True, blank=True)
     publisher = models.ForeignKey(
         Publisher, on_delete=models.SET_NULL, null=True, db_column='publisher_id')
+    author = models.ManyToManyField(
+        'Author', through='AuthorBook', related_name='books')
 
     class Meta:
         db_table = 'book'
-
-    def __str__(self):
-        return self.name
-
-
-class Genre(models.Model):
-    genre_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    book = models.ManyToManyField(Book)
-
-    class Meta:
-        db_table = 'genre'
 
     def __str__(self):
         return self.name
@@ -113,7 +103,6 @@ class Author(models.Model):
     death_date = models.DateField(null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
-    book = models.ManyToManyField(Book)
 
     class Meta:
         db_table = 'author'
@@ -122,29 +111,45 @@ class Author(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
-# class AuthorBook(models.Model):
-#     author = models.ForeignKey(
-#         Author, on_delete=models.CASCADE, db_column='author_id')
-#     book = models.ForeignKey(
-#         Book, on_delete=models.CASCADE, db_column='book_id')
+class AuthorBook(models.Model):
+    author = models.ForeignKey(
+        Author, on_delete=models.CASCADE, db_column='author_id', primary_key=True)
+    book = models.ForeignKey(
+        Book, on_delete=models.CASCADE, db_column='book_id')
 
-#     class Meta:
-#         db_table = 'author_book'
-#         unique_together = ('author', 'book')
+    class Meta:
+        db_table = 'author_book'
+        unique_together = ('author', 'book')
+        managed = False
 
 
-# class GenreBook(models.Model):
-#     genre = models.ForeignKey(
-#         Genre, on_delete=models.CASCADE, db_column='genre_id')
-#     book = models.ForeignKey(
-#         Book, on_delete=models.CASCADE, db_column='book_id')
+class Genre(models.Model):
+    genre_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    book = models.ManyToManyField(
+        Book, through='GenreBook', related_name='genres')
 
-#     class Meta:
-#         db_table = 'genre_book'
-#         unique_together = ('genre', 'book')
+    class Meta:
+        db_table = 'genre'
+
+    def __str__(self):
+        return self.name
+
+
+class GenreBook(models.Model):
+    genre = models.ForeignKey(
+        Genre, on_delete=models.CASCADE, db_column='genre_id', primary_key=True)
+    book = models.ForeignKey(
+        Book, on_delete=models.CASCADE, db_column='book_id')
+
+    class Meta:
+        db_table = 'genre_book'
+        unique_together = ('genre', 'book')
+        managed = False
 
 
 class Purchase(models.Model):
+    purchase_id = models.AutoField(primary_key=True, db_column='purchase_id')
     client = models.ForeignKey(
         Client, on_delete=models.SET_NULL, null=True, db_column='client_id')
     employee = models.ForeignKey(
@@ -161,7 +166,7 @@ class Purchase(models.Model):
 
 class PurchaseDetail(models.Model):
     purchase = models.ForeignKey(
-        Purchase, on_delete=models.CASCADE, db_column='purchase_id')
+        Purchase, on_delete=models.CASCADE, db_column='purchase_id', primary_key=True)
     book = models.ForeignKey(
         Book, on_delete=models.CASCADE, db_column='book_id')
     quantity = models.IntegerField()

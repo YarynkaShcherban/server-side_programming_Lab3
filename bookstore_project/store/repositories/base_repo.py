@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from django.db.models import Model
 
 
@@ -18,7 +18,7 @@ class BaseRepo(ABC):
     def create(self, **kwargs):  # створення нового екземпляру
         return self.model.objects.create(**kwargs)
 
-    def update(self, _id, **kwargs): # Оновлення існуючого запису
+    def update(self, _id, **kwargs):  # Оновлення існуючого запису
         instance = self.get_by_id(_id)
         if not instance:
             return None
@@ -27,7 +27,7 @@ class BaseRepo(ABC):
         instance.save()
         return instance
 
-    def delete(self, _id): # Видалення запису
+    def delete(self, _id):  # Видалення запису
         instance = self.get_by_id(_id)
         if not instance:
             return False
